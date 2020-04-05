@@ -1,0 +1,6 @@
+mbed-os/features/cellular/*
+mbed-os/feature/cryptocell/*
+mbed-os/features/lwipstack/*
+mbed-os/features/nanostack/*
+mbed-os/features/netsocket/*
+mbed-os/features/nfc/*

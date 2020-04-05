@@ -1,0 +1,42 @@
+{
+"TSENSOR": {
+        "inherits": ["FAMILY_STM32"],
+        "core": "Cortex-M0+",
+        "extra_labels_add": [
+            "STM32L0",
+            "STM32L072CZ",
+            "STM32L072xZ",
+            "STM32L072xx"
+        ],
+        "supported_form_factors": ["ARDUINO", "MORPHO"],
+        "supported_toolchains": ["GCC_ARM", "ARMC6"],
+        "config": {
+            "clock_source": {
+                "help": "Mask value : USE_PLL_HSE_EXTC (need HW patch) | USE_PLL_HSE_XTAL (need HW patch) | USE_PLL_HSI",
+                "value": "USE_PLL_HSI",
+                "macro_name": "CLOCK_SOURCE"
+            },
+            "lpticker_lptim": {
+                "help": "This target supports LPTIM. Set value 1 to use LPTIM for LPTICKER, or 0 to use RTC wakeup timer",
+                "value": 1
+            }
+        },
+        "macros_add": [
+            "MBED_TICKLESS",
+            "EXTRA_IDLE_STACK_REQUIRED"
+        ],
+        "overrides": { "lpticker_delay_ticks": 0 },
+		"target_overrides": { "target.usb-speed": 0},
+        "detect_code": ["0833"],
+        "device_has_add": [
+            "ANALOGOUT",
+            "CRC",
+            "SERIAL_ASYNCH",
+            "TRNG",
+            "FLASH",
+            "MPU"
+        ],
+        "release_versions": ["2", "5"],
+        "device_name": "STM32L072CZ"
+    }
+}

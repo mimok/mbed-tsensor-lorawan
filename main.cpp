@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) 2020, Michael Grand
  * Copyright (c) 2017, Arm Limited and affiliates.
  * SPDX-License-Identifier: Apache-2.0
  *

@@ -38,7 +38,7 @@
             "platform.stdio-convert-newlines": true,
             "platform.stdio-baud-rate": 115200,
             "platform.default-serial-baud-rate": 115200,
-            "lora.tx-max-size": 128,
+            "lora.tx-max-size": 255,
             "lora.over-the-air-activation": true,
             "lora.duty-cycle-on": true,
             "lora.phy": "EU868",

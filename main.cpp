@@ -222,18 +222,18 @@ static void send_message()
 	printByteArray("Random", &attestation.outrandom[0], 16);
 	printByteArray("TimeStamp", &attestation.timeStamp[0], 12);
 	printByteArray("Signature", &attestation.signature.p_data[0], attestation.signature.len);
+	printByteArray("Data", &ctx.out.p_data[0], ctx.out.len);
 	printf("SW = %x", ctx.sw);
 
 	packet_len = 0;
-	tx_buffer[0] = (uint8_t)((temperature >> 8) & 0xFF);
-	tx_buffer[1] = (uint8_t)(temperature & 0xFF);
-	packet_len += 2;
-	memcpy(&tx_buffer[packet_len], &attestation.chipId[0], 18);
-	packet_len += 18;
-	memcpy(&tx_buffer[packet_len], &attestation.outrandom[0], 16);
-	packet_len += 16;
+	memcpy(&tx_buffer[packet_len], &attestation.data.p_data[0], attestation.data.len);
+	packet_len += attestation.data.len;
 	memcpy(&tx_buffer[packet_len], &attestation.timeStamp[0], 12);
 	packet_len += 12;
+	memcpy(&tx_buffer[packet_len], &attestation.outrandom[0], 16);
+	packet_len += 16;
+	memcpy(&tx_buffer[packet_len], &attestation.chipId[0], 18);
+	packet_len += 18;
 	memcpy(&tx_buffer[packet_len], &attestation.signature.p_data[0], attestation.signature.len);
 	packet_len += attestation.signature.len;
 

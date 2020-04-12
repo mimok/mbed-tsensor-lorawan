@@ -26,7 +26,7 @@ void printByteArray(const char *arrayName, uint8_t *buffer, int len)
 			printf("\n");
 		else if (i%4==0)
 			printf(" ");
-		printf("%02x",buffer[i]);
+		printf("%02x",buffer[i-1]);
 	}
 	printf("\n");
 }

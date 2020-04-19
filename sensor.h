@@ -18,6 +18,7 @@
 #ifndef SENSOR_H_
 #define SENSOR_H_
 
-uint8_t getTemp(apdu_ctx_t *ctx, uint16_t *temp, attestation_t *attestation);
+mbed_error_status_t  connect(apdu_ctx_t *ctx);
+mbed_error_status_t  getTemp(apdu_ctx_t *ctx, uint16_t *temp, attestation_t *attestation);
 
 #endif /* SENSOR_H_ */

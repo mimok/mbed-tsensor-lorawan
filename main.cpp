@@ -21,17 +21,11 @@
 /* Includes                                                                   */
 /* ************************************************************************** */
 #include "mbed.h"
-//#include "drivers/DigitalOut.h"
-//#include "rtos/rtos.h"
-//#include "math.h"
 
 extern "C" {
-#include "phNxpEse_Api.h"
-#include "phNxpEseProto7816_3.h"
-#include "mbed-se050-drv/se050_enums.h"
-#include "apdu.h"
-#include "util.h"
+#include "mbed-se050-drv/se050.h"
 #include "sensor.h"
+#include "util.h"
 }
 
 #include "lorawan/LoRaRadio.h"
@@ -43,10 +37,6 @@ extern "C" {
 /* ************************************************************************** */
 /* Local Defines                                                              */
 /* ************************************************************************** */
-#define KEYSIZE 256
-#define MAX_SIGNATURE_LEN 128 //TODO: instead of 256
-#define ATTESTATION_KEY_ID 0xF0000012
-#define I2C_MAX_DATA 32
 
 /*
  * Sets up an application dependent transmission timer in ms. Used only when Duty Cycling is off for testing
@@ -64,11 +54,6 @@ extern "C" {
  * Maximum number of retries for CONFIRMED messages before giving up
  */
 #define CONFIRMED_MSG_RETRY_COUNTER     3
-
-/**
- * Dummy pin for dummy sensor
- */
-#define PC_9                            0
 
 /* ************************************************************************** */
 /* Global Variables                                                           */
@@ -134,21 +119,11 @@ static apdu_ctx_t ctx;
 
 int main(void)
 {
-	DigitalOut seResetGpio(PB_7,1);
-	DigitalOut se050_nrst(PA_10, 0);
-	wait_us(100);
-	se050_nrst = 1;
-
 	printf("lets go!\n");
-	se050_initApduCtx(&ctx);
-
-	se050_connect(&ctx);
-	printByteArray("ATR", ctx.atr, ctx.atrLen);
-	printf("Major: %02x\n", ctx.version.major);
-	printf("Minor: %02x\n", ctx.version.minor);
-	printf("Patch: %02x\n", ctx.version.patch);
-	printf("Applet Config: %04x\n", ctx.version.appletConfig);
-	printf("Secure Box: %04x\n", ctx.version.secureBox);
+	if(MBED_SUCCESS != connect(&ctx)) {
+		printf("Can't connect to SE050 \r\n");
+		return ERROR_STATUS;
+	}
 
 
     // stores the status of a call to LoRaWAN protocol
@@ -198,7 +173,7 @@ int main(void)
     // make your event queue dispatching events forever
     ev_queue.dispatch_forever();
 	
-exit:	
+    printf("Leaving event dispatcher \r\n");
 	return ERROR_STATUS;
 }
 

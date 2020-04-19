@@ -15,26 +15,28 @@
  * limitations under the License.
  */
 
-#include "apdu.h"
+#include "mbed-se050-drv/se050.h"
+#include "util.h"
+#include "mbed_error.h"
 
 #define I2C_SENSOR_BUS_ADDRESS 0x48 /* I2C bus address of sensor */
 
 //Configuration settings
-#define TMP3_ONESHOT	0x80 //One Shot mode
-#define TMP3_RES9		0x00 //9-bit resultion
-#define TMP3_RES10		0x20 //10-bit resolution
-#define TMP3_RES11		0x40 //11-bit resolution
-#define TMP3_RES12		0x60 //12-bit resolution
-#define TMP3_FAULT1		0x00 //1 fault queue bits
-#define TMP3_FAULT2		0x08 //2 fault queue bits
-#define TMP3_FAULT4		0x10 //4 fault queue bits
-#define TMP3_FAULT6		0x18 //6 fault queue bits
-#define TMP3_ALERTLOW	0x00 //Alert bit active-low
-#define TMP3_ALERTHIGH	0x04 //Alert bit active-high
-#define TMP3_CMPMODE	0x00 //comparator mode
-#define TMP3_INTMODE	0x02 //interrupt mode
-#define TMP3_SHUTDOWN	0x01 //Shutdown enabled
-#define	TMP3_STARTUP	0x00 //Shutdown Disabled
+#define TMP3_ONESHOT	0x80 ///One Shot mode
+#define TMP3_RES9		0x00 ///9-bit resultion
+#define TMP3_RES10		0x20 ///10-bit resolution
+#define TMP3_RES11		0x40 ///11-bit resolution
+#define TMP3_RES12		0x60 ///12-bit resolution
+#define TMP3_FAULT1		0x00 ///1 fault queue bits
+#define TMP3_FAULT2		0x08 ///2 fault queue bits
+#define TMP3_FAULT4		0x10 ///4 fault queue bits
+#define TMP3_FAULT6		0x18 ///6 fault queue bits
+#define TMP3_ALERTLOW	0x00 ///Alert bit active-low
+#define TMP3_ALERTHIGH	0x04 ///Alert bit active-high
+#define TMP3_CMPMODE	0x00 ///comparator mode
+#define TMP3_INTMODE	0x02 ///interrupt mode
+#define TMP3_SHUTDOWN	0x01 ///Shutdown enabled
+#define	TMP3_STARTUP	0x00 ///Shutdown Disabled
 						 //Default Startup Configuration Used, this is just so the device can be
 						 //reset to startup configurations at a later time, it doesn't need to be
 						 //called anywhere.
@@ -42,7 +44,24 @@
 #define	TMP3_MIN		-128 //Minimum input temperature for the Hyst/Limit registers
 #define	TMP3_MAX		127.5 //Maximum input temperature for the Hyst/Limit registers
 
-uint8_t getTemp(apdu_ctx_t *ctx, uint16_t *temp, attestation_t *attestation) {
+
+mbed_error_status_t connect(apdu_ctx_t *ctx) {
+	se050_powerOn();
+	se050_initApduCtx(ctx);
+	if(APDU_OK != se050_connect(ctx))
+		return MBED_ERROR_CODE_FAILED_OPERATION;
+	if(APDU_OK != se050_select(ctx))
+		return MBED_ERROR_CODE_FAILED_OPERATION;
+	printByteArray("ATR", ctx->atr, ctx->atrLen);
+	printf("Major: %02x\n", ctx->version.major);
+	printf("Minor: %02x\n", ctx->version.minor);
+	printf("Patch: %02x\n", ctx->version.patch);
+	printf("Applet Config: %04x\n", ctx->version.appletConfig);
+	printf("Secure Box: %04x\n", ctx->version.secureBox);
+	return MBED_SUCCESS;
+}
+
+mbed_error_status_t  getTemp(apdu_ctx_t *ctx, uint16_t *temp, attestation_t *attestation) {
 
 	apdu_status_t status;
 	i2cm_tlv_t tlv[5] = {0};
@@ -76,7 +95,7 @@ uint8_t getTemp(apdu_ctx_t *ctx, uint16_t *temp, attestation_t *attestation) {
 	*temp = (tlv[3].rsp.p_data[0] << 8)  | tlv[3].rsp.p_data[1];
 
 	if(status != APDU_OK || ctx->sw != 0x9000)
-		return APDU_ERROR;
+		return MBED_ERROR_CODE_FAILED_OPERATION;
 	else
-		return APDU_OK;
+		return MBED_SUCCESS;
 }

@@ -117,9 +117,17 @@ static apdu_ctx_t ctx;
 
 #define ERROR_STATUS -1
 
+FileHandle *mbed::mbed_override_console(int)
+{
+    static UARTSerial uart(MBED_CONF_TARGET_UART_TX, MBED_CONF_TARGET_UART_RX);
+    return &uart;
+}
+
 int main(void)
 {
 	printf("lets go!\n");
+	DigitalOut led(MBED_CONF_TARGET_LED,1);
+
 	if(MBED_SUCCESS != connect(&ctx)) {
 		printf("Can't connect to SE050 \r\n");
 		return ERROR_STATUS;

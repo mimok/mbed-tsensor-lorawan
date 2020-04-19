@@ -33,7 +33,7 @@
             "platform.minimal-printf-enable-64-bit": false,
             "rtos.timer-thread-stack-size": 0,
             "rtos.idle-thread-stack-size" : 256,
-            "rtos.main-thread-stack-size": 4352,
+            "rtos.main-thread-stack-size": 2048,
 			
             "platform.stdio-convert-newlines": true,
             "platform.stdio-baud-rate": 115200,
@@ -44,10 +44,8 @@
             "lora.phy": "EU868",
             "lora.device-eui": "{ 0x39, 0x30, 0x32, 0x35, 0x65, 0x37, 0x69, 0x03}",
             "lora.application-eui": "{ 0x70, 0xB3, 0xD5, 0x7E, 0xD0, 0x02, 0x6E, 0xED }",
-            "lora.application-key": "{ 0x2B, 0x7E, 0x15, 0x16, 0x28, 0xAE, 0xD2, 0xA6, 0xAB, 0xF7, 0x15, 0x88, 0x09, 0xCF, 0x4F, 0x3C }"
-        },
+            "lora.application-key": "{ 0x2B, 0x7E, 0x15, 0x16, 0x28, 0xAE, 0xD2, 0xA6, 0xAB, 0xF7, 0x15, 0x88, 0x09, 0xCF, 0x4F, 0x3C }",
 
-        "TSENSOR": {
             "lora-radio":          "SX1276",
             "lora-spi-mosi":       "PA_7",
             "lora-spi-miso":       "PA_6",
@@ -65,15 +63,19 @@
             "lora-txctl":          "PC_2",
             "lora-rxctl":          "PA_1",
             "lora-ant-switch":     "NC",
-            "lora-pwr-amp-ctl":    "PC_1",
-            "lora-tcxo":           "PA_8"
+            "lora-pwr-amp-ctl":    "PC_1"
+            
+        },
+        "TSENSOR": {
+        	"lora-tcxo":           "PA_8"
+        },
+        "TSENSOR_DEV": {
+            "lora-tcxo":           "NC"
         }
 
     },
     "macros": [	
-		"T1oI2C",
-		"T1oI2C_UM1225_SE050",
 		"MBEDTLS_USER_CONFIG_FILE=\"mbedtls_lora_config.h\""
-	]
+    ]
 }
 

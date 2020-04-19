@@ -1,5 +1,5 @@
 {
-"TSENSOR": {
+	"TSENSOR": {
         "inherits": ["FAMILY_STM32"],
         "core": "Cortex-M0+",
         "extra_labels_add": [
@@ -8,8 +8,8 @@
             "STM32L072xZ",
             "STM32L072xx"
         ],
-        "supported_form_factors": ["ARDUINO", "MORPHO"],
-        "supported_toolchains": ["GCC_ARM", "ARMC6"],
+        "supported_form_factors": ["MIKROBUS"],
+        "supported_toolchains": ["GCC_ARM"],
         "config": {
             "clock_source": {
                 "help": "Mask value : USE_PLL_HSE_EXTC (need HW patch) | USE_PLL_HSE_XTAL (need HW patch) | USE_PLL_HSI",
@@ -19,7 +19,19 @@
             "lpticker_lptim": {
                 "help": "This target supports LPTIM. Set value 1 to use LPTIM for LPTICKER, or 0 to use RTC wakeup timer",
                 "value": 1
-            }
+            },
+          	"se050-enapin": {
+        		"help": "Name of the PIN connected to SE050 ENA Pin",
+        		"value" : "PB_5"
+        	},
+          	"se050-sda": {
+        		"help": "Name of the PIN connected to SE050 I2C SDA",
+        		"value" : "PB_9"
+        	},
+          	"se050-scl": {
+        		"help": "Name of the PIN connected to SE050 I2C SCL",
+        		"value" : "PB_8"
+        	}
         },
         "macros_add": [
             "MBED_TICKLESS",
@@ -38,5 +50,13 @@
         ],
         "release_versions": ["2", "5"],
         "device_name": "STM32L072CZ"
+    },
+    "TSENSOR_DEV": {
+        "inherits": ["TSENSOR"],
+        "overrides": {
+        	"target.se050-enapin": "PB_7",
+        	"target.se050-sda": "PB_9",
+        	"target.se050-scl": "PB_8"
+        }
     }
 }

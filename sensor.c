@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2020, Michael Grand
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -92,10 +92,10 @@ mbed_error_status_t  getTemp(apdu_ctx_t *ctx, uint16_t *temp, attestation_t *att
 			&random[0],
 			attestation,
 			ctx);
-	*temp = (tlv[3].rsp.p_data[0] << 8)  | tlv[3].rsp.p_data[1];
-
-	if(status != APDU_OK || ctx->sw != 0x9000)
+	if(status != APDU_OK || ctx->sw != 0x9000) {
 		return MBED_ERROR_CODE_FAILED_OPERATION;
-	else
+	} else {
+		*temp = (tlv[3].rsp.p_data[0] << 8)  | tlv[3].rsp.p_data[1];
 		return MBED_SUCCESS;
+	}
 }

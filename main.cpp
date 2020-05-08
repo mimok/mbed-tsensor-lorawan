@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2020, Michael Grand
  * Copyright (c) 2017, Arm Limited and affiliates.
  * SPDX-License-Identifier: Apache-2.0
@@ -199,7 +199,10 @@ static void send_message()
 	
     printf("Read SE050 attested PmodTMP3 temperature\r\n");
     /* ------------------------------------------------------------------------------------------------------------------- */
-    getTemp(&ctx, &temperature, &attestation);
+    if(MBED_SUCCESS != getTemp(&ctx, &temperature, &attestation)) {
+    	perror("Can't read temperature");
+    	exit(1);
+    }
 	printf("Temperature: %x\n", temperature);
 	printByteArray("ChipId", &attestation.chipId[0], 18);
 	printByteArray("Random", &attestation.outrandom[0], 16);
@@ -238,11 +241,6 @@ static void send_message()
     printf("\r\n %d bytes scheduled for transmission \r\n", retcode);
     memset(tx_buffer, 0, sizeof(tx_buffer));
     return;
-
-exit:
-	printf("\r\n Transmission failed \r\n");
-	memset(tx_buffer, 0, sizeof(tx_buffer));
-	return;
 }
 
 /**

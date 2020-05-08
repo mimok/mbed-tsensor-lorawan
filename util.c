@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2020, Michael Grand
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -20,13 +20,13 @@
 
 void printByteArray(const char *arrayName, uint8_t *buffer, int len)
 {
-	printf("%s (len=%d)\n", arrayName, len);
-	for(int i=1; i<=len; i++) {
+	printf("%s (len=%d)", arrayName, len);
+	for(int i=0; i<len; i++) {
 		if(i%16==0)
 			printf("\n");
 		else if (i%4==0)
 			printf(" ");
 		printf("%02x",buffer[i-1]);
 	}
-	printf("\n");
+	printf("\n\n");
 }

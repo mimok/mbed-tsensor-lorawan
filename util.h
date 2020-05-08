@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2020, Michael Grand
  * SPDX-License-Identifier: Apache-2.0
  *

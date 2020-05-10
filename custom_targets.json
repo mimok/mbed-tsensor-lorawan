@@ -36,20 +36,20 @@
         		"help": "LED pin name",
         		"value" : "PH_1"
         	},
-          	"uart-tx": {
-        		"help": "UART TX pin name",
-        		"value" : "PA_9"
-        	},
-          	"uart-rx": {
-        		"help": "UART RX pin name",
-        		"value" : "PA_10"
+        	"usbserial-en" : {
+        		"help": "Use USB port as stdio",
+        		"value" : 1
         	}
         },
         "macros_add": [
             "MBED_TICKLESS",
             "EXTRA_IDLE_STACK_REQUIRED"
         ],
-        "overrides": { "lpticker_delay_ticks": 0 },
+        "overrides": { 
+        	"lpticker_delay_ticks": 0,
+        	"target.stdio_uart_tx": "PA_9",
+        	"target.stdio_uart_rx": "PA_10"
+        },
         "detect_code": ["0833"],
         "device_has_add": [
             "ANALOGOUT",
@@ -57,7 +57,8 @@
             "SERIAL_ASYNCH",
             "TRNG",
             "FLASH",
-            "MPU"
+            "MPU",
+            "USBDEVICE"
         ],
         "release_versions": ["2", "5"],
         "device_name": "STM32L072CZ"
@@ -69,8 +70,9 @@
         	"target.se050-sda": "PB_9",
         	"target.se050-scl": "PB_8",
         	"target.led": "PB_6",
- 			"target.uart-tx": "PA_2",
-			"target.uart-rx": "PA_3"
+        	"target.stdio_uart_tx": "PA_2",
+        	"target.stdio_uart_rx": "PA_3",
+			"target.usbserial-en" : 0
         }
     }
 }

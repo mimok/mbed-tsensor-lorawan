@@ -117,12 +117,6 @@ static apdu_ctx_t ctx;
 
 #define ERROR_STATUS -1
 
-FileHandle *mbed::mbed_override_console(int)
-{
-    static UARTSerial uart(MBED_CONF_TARGET_UART_TX, MBED_CONF_TARGET_UART_RX);
-    return &uart;
-}
-
 int main(void)
 {
 	printf("lets go!\n");

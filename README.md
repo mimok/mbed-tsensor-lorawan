@@ -142,7 +142,31 @@ Click on de *data* tab to watch you node traffic.
 
 # Root of Trust
 
-## check certificate chain
+## Check chain of certificates
+
+First, use the `mbed-tsensor-vcom` application to retrieve the SE050 ECC certificate located by default at address
+0xF0000013. Then download the root and intermediate certificates using links from [AN12436](https://www.nxp.com/docs/en/application-note/AN12436.pdf).
+Finally, you can verify the validty of the certificate retrieve from the SE050 chip using the following command:
+
 ```bash
 openssl verify -verbose -CAfile root.pem -untrusted intermediate.pem certificate.pem
+```
+
+## Check integrity of data received from the lorawan sensor
+:warning: It is assumed that you are using services from *The Things Network*.
+To check the integrity of the received data using the extracted certificate use the `ttn_console_example.py`
+Python script located in the `scripts` folder of the `mbed-tsensor-lorawan` repository.
+In this script, enter the right application ID and access key by modifying the two following lines (you will find these values in the TTN interface):
+
+```python
+app_id = "YOUR_APP_ID"
+access_key = "YOUR_ACCES_KEY"
+```
+Plug your board and run the python. If everything goes right, you should see the following output in the python
+console:
+
+```
+Received uplink from  board1
+temperature: 26.0
+valid signature
 ```
